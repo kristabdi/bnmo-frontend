@@ -6,10 +6,6 @@ import './App.css';
 
 function App() {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
-  
-  useEffect(() => {
-    localStorage.clear();
-  });
 
   return (
     <div className="App">

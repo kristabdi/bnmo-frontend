@@ -1,18 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useCookies } from 'react-cookie';
 
 type FormData = {
     name: string;
     email: string;
     password: string;
+    idcard: File;
 };
 
 function RegisterForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<FormData>({mode: "onChange"});
+    const [errMsg, setErrMsg] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [cookies, setCookie] = useCookies();
 
-    const onSubmit = handleSubmit((data) => {
-        console.log(data);
+    const onSubmit = handleSubmit(async (data) => {
+        await axios.post('/api/register/', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }).then((res: any) => {
+            setSuccess(true);
+            alert(JSON.stringify(`Login success!`));
+            cookies.set("token", res.access_token);
+            cookies.set("email", res.data.email);
+            cookies.set("name", res.data.name);
+            // redirect to user or admin dashboard
+        }).catch(error => {
+            setErrMsg("Login Failed!");
+        })
     })
 
     return (
@@ -30,7 +50,7 @@ function RegisterForm() {
                                 type="text"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                             />
-                            {errors.name && <p className="text-left text-xs text-red-400">Name is invalid</p>}
+                            {errors.name && <p className="text-left text-xs text-red-400">{errors.name.message}</p>}
                         </div>
                         <div>
                         <label className="text-left text-sm font-bold text-gray-600 block">Email</label>
@@ -40,7 +60,7 @@ function RegisterForm() {
                                 type="email"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                             />
-                            {errors.email && <p className="text-left text-xs text-red-400">Email is invalid</p>}
+                            {errors.email && <p className="text-left text-xs text-red-400">{errors.email.message}</p>}
                         </div>
                         <div>
                             <label className="text-left text-sm font-bold text-gray-600 block">Password</label>
@@ -50,12 +70,31 @@ function RegisterForm() {
                                 type="password"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                             />
-                            {errors.password && <p className="text-left text-xs text-red-400">Password is invalid</p>}
+                            {errors.password && <p className="text-left text-xs text-red-400">{errors.password.message}</p>}
+                        </div>
+                        <div>
+                            <label className="text-left text-sm font-bold text-gray-600 block">ID Card / KTP</label>
+                            <input
+                                {...register("idcard", { required: true })}
+                                placeholder="Choose image"
+                                type="file"
+                                onChange={(e) => {
+                                    if (e.target?.files && (e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/jpg" && e.target.files[0].type !== "image/jpeg")) {
+                                        setError('idcard', {
+                                            type: 'manual',
+                                            message: 'Please upload a valid image file (png/jpeg/jpg).'
+                                        });
+                                    }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
+                            />
+                            {errors.idcard && <p className="text-left text-xs text-red-400">{errors.idcard.message}</p>}
                         </div>
                         <Link to="/login" className="text-right text-sm text-gray-600 block"> Already have an account? </Link>
                         <div>
                             <button type="submit" className="w-full p-2 bg-blue-700 hover:text-gray-900 hover:bg-blue-900 text-white font-bold py-2 rounded">Submit</button>
                         </div>
+                        {!success && <p className='text-warning'>{errMsg}</p>}
                     </form>
                 </div>
         </div>

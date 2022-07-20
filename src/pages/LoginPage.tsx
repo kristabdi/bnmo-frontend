@@ -1,7 +1,8 @@
-import React from "react";
-import { useState } from "react";
+import axios from "axios";
+import React, { useState }  from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 type FormData = {
     email: string;
@@ -10,10 +11,27 @@ type FormData = {
 
 function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
+    const [errMsg, setErrMsg] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [cookies, setCookie] = useCookies();
 
-    const onSubmit = handleSubmit((data) => {
-        console.log(data);
-        localStorage.setItem("isAuthenticated", "true");
+    const onSubmit = handleSubmit(async (data) => {
+        await axios.post('/api/login/', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }).then((res: any) => {
+            setSuccess(true);
+            alert(JSON.stringify(`Login success!`));
+            cookies.set("token", res.access_token);
+            cookies.set("email", res.data.email);
+            cookies.set("name", res.data.name);
+            cookies.set("balance", res.data.balance);
+            // redirect to user or admin dashboard
+        }).catch(error => {
+            setErrMsg("Login Failed!");
+        })
     })
 
     return (
@@ -47,6 +65,7 @@ function LoginForm() {
                         <div>
                             <button type="submit" className="w-full p-2 bg-blue-700 hover:text-gray-900 hover:bg-blue-900 text-white font-bold py-2 rounded">Submit</button>
                         </div>
+                        {!success && <p className='text-warning'>{errMsg}</p>}
                     </form>
                 </div>
         </div>
