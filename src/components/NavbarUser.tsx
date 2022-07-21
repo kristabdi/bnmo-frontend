@@ -11,7 +11,7 @@ function NavUser() {
                 <Link to="/request" className='mx-4 text-black no-underline text-base'>Request</Link>
                 <Link to="/transaction" className='mx-4 text-black no-underline text-base'>Transaction</Link>
                 <Link to="/history" className='mx-4 text-black no-underline text-base'>History</Link>
-                <Link to="/profile" className='mx-4 text-black no-underline text-base'>Profile</Link>
+                <Link to="/dashboard" className='mx-4 text-black no-underline text-base'>Dashboard</Link>
                 <LogoutButton/>
             </div>
         </Navbar>

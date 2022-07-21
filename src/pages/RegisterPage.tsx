@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 
 type FormData = {
     name: string;
-    email: string;
+    username: string;
     password: string;
     idcard: File;
 };
@@ -27,7 +27,7 @@ function RegisterForm() {
             setSuccess(true);
             alert(JSON.stringify(`Login success!`));
             cookies.set("token", res.access_token);
-            cookies.set("email", res.data.email);
+            cookies.set("username", res.data.username);
             cookies.set("name", res.data.name);
             // redirect to user or admin dashboard
         }).catch(error => {
@@ -53,14 +53,14 @@ function RegisterForm() {
                             {errors.name && <p className="text-left text-xs text-red-400">{errors.name.message}</p>}
                         </div>
                         <div>
-                        <label className="text-left text-sm font-bold text-gray-600 block">Email</label>
+                        <label className="text-left text-sm font-bold text-gray-600 block">Username</label>
                             <input
-                                {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })}
-                                placeholder="Email"
-                                type="email"
+                                {...register("username", { required: true, pattern: /^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/ })}
+                                placeholder="Username"
+                                type="text"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                             />
-                            {errors.email && <p className="text-left text-xs text-red-400">{errors.email.message}</p>}
+                            {errors.username && <p className="text-left text-xs text-red-400">{errors.username.message}</p>}
                         </div>
                         <div>
                             <label className="text-left text-sm font-bold text-gray-600 block">Password</label>

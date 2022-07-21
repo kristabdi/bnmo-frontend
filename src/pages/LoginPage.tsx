@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
 type FormData = {
-    email: string;
+    username: string;
     password: string;
 };
 
@@ -25,7 +25,7 @@ function LoginForm() {
             setSuccess(true);
             alert(JSON.stringify(`Login success!`));
             cookies.set("token", res.access_token);
-            cookies.set("email", res.data.email);
+            cookies.set("username", res.data.username);
             cookies.set("name", res.data.name);
             cookies.set("balance", res.data.balance);
             // redirect to user or admin dashboard
@@ -42,14 +42,14 @@ function LoginForm() {
                 <div className="max-w-md w-full mx-auto mt-4 bg-white p-8 shadow-sm rounded-md">
                     <form onSubmit={onSubmit} className="space-y-6">
                         <div>
-                        <label className="text-left text-sm font-bold text-gray-600 block">Email</label>
+                        <label className="text-left text-sm font-bold text-gray-600 block">Username</label>
                             <input
-                                {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })}
-                                placeholder="Email"
-                                type="email"
+                                {...register("username", { required: true, pattern: /^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/ })}
+                                placeholder="Username"
+                                type="text"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                             />
-                            {errors.email && <p className="text-left text-xs text-red-400">Email is invalid</p>}
+                            {errors.username && <p className="text-left text-xs text-red-400">Username is invalid</p>}
                         </div>
                         <div>
                             <label className="text-left text-sm font-bold text-gray-600 block">Password</label>

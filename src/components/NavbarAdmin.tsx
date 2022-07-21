@@ -11,7 +11,7 @@ function NavAdmin() {
                 <Link to="/request" className='mx-4 text-black no-underline text-base'>Users</Link>
                 <Link to="/transaction" className='mx-4 text-black no-underline text-base'>Activity</Link>
                 <Link to="/history" className='mx-4 text-black no-underline text-base'>Search</Link>
-                <Link to="/profile" className='mx-4 text-black no-underline text-base'>Profile</Link>
+                <Link to="/dashboard" className='mx-4 text-black no-underline text-base'>Dashboard</Link>
                 <LogoutButton/>
             </div>
         </Navbar>

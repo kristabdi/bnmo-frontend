@@ -14,7 +14,7 @@ function LogoutButton() {
             alert(JSON.stringify(`Logout success!`));
             cookies.remove("token");
             cookies.remove("name");
-            cookies.remove("email");
+            cookies.remove("username");
             cookies.remove("balance");
             return <Navigate to="/login" />
         }).catch(error => {
