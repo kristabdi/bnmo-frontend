@@ -14,18 +14,26 @@ type FormData = {
 
 function RequestForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
+    const [cookies, setCookie] = useCookies();
+
     const onSubmit = handleSubmit(async (data) => {
-        // await axios.post('/api/request/', {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data)
-        // }).then((res: any) => {
-        //     alert(JSON.stringify(`Login success!`));
-        //     // redirect to user or admin dashboard
-        // }).catch(error => {
-        //     alert(JSON.stringify(`Login failed!`));
-        // })
+        if (data.isAdd) {
+
+        } else {
+
+        }
+        await axios.post('/api/request/', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${cookies.get("token")}`
+            },
+            body: JSON.stringify(data)
+        }).then((res: any) => {
+            alert(JSON.stringify(`Login success!`));
+            // redirect to user or admin dashboard
+        }).catch(error => {
+            alert(JSON.stringify(`Login failed!`));
+        })
         console.log(JSON.stringify(data));
     })
 

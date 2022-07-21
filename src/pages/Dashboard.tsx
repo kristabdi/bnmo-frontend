@@ -6,10 +6,27 @@ import NavbarUser from "../components/NavbarUser"
 
 function Dashboard() {
     const [cookies, setCookie] = useCookies();
+    const [data,  setData] = useState([]);
 
     // if (cookies.get("token") === undefined) {
     //     return <Navigate to="/login" />
     // }
+
+    // useEffect(() => {
+    //     axios.get(`/customer/info/`, {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: `Bearer ${cookies.get("token")}`
+    //         }
+    //     })
+    //     .then(res => {
+    //         const data = res.data;
+    //         setData(data);
+    //     })
+    //     .catch(error => {
+    //         alert(JSON.stringify(error));
+    //     })
+    // });
 
     return (
         <>

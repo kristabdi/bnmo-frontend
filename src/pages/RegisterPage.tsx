@@ -27,8 +27,6 @@ function RegisterForm() {
             setSuccess(true);
             alert(JSON.stringify(`Login success!`));
             cookies.set("token", res.access_token);
-            cookies.set("username", res.data.username);
-            cookies.set("name", res.data.name);
             // redirect to user or admin dashboard
         }).catch(error => {
             setErrMsg("Login Failed!");
