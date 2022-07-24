@@ -18,7 +18,7 @@ function UserVerifPage() {
     return (
         <>
         <NavbarAdmin/>
-        <Table data={tableData} columns={columns} onSubmit={onSubmit}/>
+        <Table data={tableData} columns={columns} onSubmit={onSubmit} history={false}/>
         </>
     )
 }

@@ -3,10 +3,11 @@ import React from "react";
 type Model = {
     data: any[];
     columns: any[];
-    onSubmit: (data: any) => void;
+    history: boolean;
+    onSubmit?: (data: any) => void;
 }
 
-function ReusableTable({ data, columns, onSubmit }: Model) {
+function ReusableTable({ data, columns, onSubmit, history }: Model) {
     const getCaps = (head: any, field: any) => {
         if (head) return head.toUpperCase();
         return field.toUpperCase();
@@ -28,7 +29,7 @@ function ReusableTable({ data, columns, onSubmit }: Model) {
                     data.map((row: any) => (
                     <tr key={row}>
                         {columns.map((col) => (
-                            (col.field === "is_verified" || col.field === "is_approved") ?
+                            ((col.field === "is_verified" || col.field === "is_approved") && !history) ?
                             <button
                             type="submit" 
                             className="mt-2 px-1 py-0.5 border rounded-md bg-gray-300" 
