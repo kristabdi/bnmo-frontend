@@ -1,8 +1,6 @@
-import React, {useState} from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useCookies } from 'react-cookie';
+import { Link, useNavigate } from "react-router-dom";
 
 type FormData = {
     name: string;
@@ -15,21 +13,26 @@ function RegisterForm() {
     const { register, handleSubmit, setError, formState: { errors } } = useForm<FormData>({mode: "onChange"});
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-    const [cookies, setCookie] = useCookies();
+    const navigate = useNavigate();
 
-    const onSubmit = handleSubmit(async (data) => {
-        await axios.post('/api/register/', {
+    const onSubmit = handleSubmit((data) => {
+        fetch("http://localhost:3001/auth/register", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body:JSON.stringify({
+                name: data.name,
+                username: data.username,
+                password: data.password,
+                idcard: data.idcard
+            }),
+            credentials: "include"
         }).then((res: any) => {
             setSuccess(true);
-            alert(JSON.stringify(`Login success!`));
-            cookies.set("token", res.access_token);
-            // redirect to user or admin dashboard
+            return navigate("/login")
         }).catch(error => {
-            setErrMsg("Login Failed!");
+            alert(error);
         })
     })
 

@@ -25,7 +25,7 @@ function RequestForm() {
         await axios.post('/api/request/', {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${cookies.get("token")}`
+                Authorization: `Bearer ${cookies.get("access_token")}`
             },
             body: JSON.stringify(data)
         }).then((res: any) => {

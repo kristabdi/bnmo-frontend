@@ -1,8 +1,7 @@
-import axios from "axios";
-import React, { useState }  from "react";
+import { useState }  from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 type FormData = {
     username: string;
@@ -13,21 +12,32 @@ function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-    const [cookies, setCookie] = useCookies();
+    const navigate = useNavigate();
 
-    const onSubmit = handleSubmit(async (data) => {
-        await axios.post('/api/login/', {
+    const onSubmit = handleSubmit((data) => {
+        fetch("http://localhost:3001/auth/login", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body:JSON.stringify({
+                username: data.username,
+                password: data.password
+            }),
+            credentials: "include"
         }).then((res: any) => {
+            const data = JSON.parse(JSON.stringify(res));
+            console.log(res);
             setSuccess(true);
-            alert(JSON.stringify(`Login success!`));
-            cookies.set("token", res.access_token);
-            // redirect to user or admin dashboard
+            const token = document.cookie
+                .split("; ")
+                .filter((row:any) => row.startsWith('access_token=')).map((c:any)=>c.split('=')[1])[0] || "";
+            Cookies.set("access_token", token, { path: "/" });
+            console.log(data.is_admin);
+            Cookies.set("is_admin", data.is_admin);
+            return navigate("/dashboard")
         }).catch(error => {
-            setErrMsg("Login Failed!");
+            alert(error);
         })
     })
 
@@ -51,7 +61,7 @@ function LoginForm() {
                         <div>
                             <label className="text-left text-sm font-bold text-gray-600 block">Password</label>
                             <input
-                                {...register("password", { required: true, minLength: 6 })}
+                                {...register("password", { required: true, minLength: 5 })}
                                 placeholder="Password"
                                 type="password"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { CookiesProvider } from 'react-cookie';
 import LoginForm from "./pages/LoginPage";
 import RegisterForm from "./pages/RegisterPage";
 import Dashboard from './pages/Dashboard';
@@ -15,10 +16,11 @@ function App() {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
 
   return (
+    <CookiesProvider>
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Navigate to="/transhistory"/> : <Navigate to='/reqhistory'/>}/>
+          <Route path="/" element={isAuthenticated ? <Navigate to="/register"/> : <Navigate to='/login'/>}/>
           <Route path="/login" element={<LoginForm/>}/>
           <Route path="/register" element={<RegisterForm/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
@@ -31,6 +33,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </CookiesProvider>
   );
 }
 
