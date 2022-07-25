@@ -1,25 +1,14 @@
-import { Navigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function LogoutButton() {
-    const [cookies, setCookie] = useCookies();
-    const onLogout = async () => {
-        await axios.post('/api/logout/', {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${cookies.get("token")}`
-            },
-        }).then((res: any) => {
-            alert(JSON.stringify(`Logout success!`));
-            cookies.remove("token");
-            cookies.remove("name");
-            cookies.remove("username");
-            cookies.remove("balance");
-            return <Navigate to="/login" />
-        }).catch(error => {
-            alert(JSON.stringify(`Logout failed!`));
-        })
+    const navigate = useNavigate();
+
+    const onLogout = () => {
+        Cookies.remove("access_token");
+        Cookies.remove("username");
+        Cookies.remove("name");
+        return navigate("/login");
     }
 
     return (

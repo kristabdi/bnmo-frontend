@@ -1,48 +1,54 @@
-import React, { useEffect, useState } from "react"
-import axios from "axios"
-import { useCookies } from "react-cookie"
-import { Navigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import Cookies from 'js-cookie';
 import NavbarUser from "../components/NavbarUser"
 
 function Dashboard() {
-    const [cookies, setCookie] = useCookies();
-    const [data,  setData] = useState([]);
+    const [data,  setData] = useState<any>();
 
-    // if (cookies.get("token") === undefined) {
-    //     return <Navigate to="/login" />
-    // }
+    const fetchData = () => {
+        fetch("http://localhost:3001/customer/info", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("access_token")}`
+            },
+            credentials: "include"
+        }).then(response => response.json())
+        .then((body:any) =>{
+            console.log(body);
+            setData(body);
+        }).catch(error => {
+            alert(error);
+        })
+    }
 
-    // useEffect(() => {
-    //     axios.get(`/customer/info/`, {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             Authorization: `Bearer ${cookies.get("token")}`
-    //         }
-    //     })
-    //     .then(res => {
-    //         const data = res.data;
-    //         setData(data);
-    //     })
-    //     .catch(error => {
-    //         alert(JSON.stringify(error));
-    //     })
-    // });
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <>
         <NavbarUser/>
         <div className="min-h-screen bg-gray-100 flex flex-col justify-center">
-            
             <div className="max-w-md w-full mx-auto justify-start">
+                {
+                    data ? 
+                (
+                <>
                 <div>
-                    <h1 className="text-center text-4xl font-bold">Hi, </h1>
+                    <h1 className="text-center text-4xl font-bold">Hi, {data.name}</h1>
                 </div>
                 <div>
-                    <h3 className="text-muted py-2 text-2xl text-center">Username : </h3>
+                    <h3 className="text-muted py-2 text-2xl text-center">Username : {data.username}</h3>
                 </div>
                 <div>
-                    <h3 className="text-muted text-2xl text-center">Balance : </h3>
+                    <h3 className="text-muted text-2xl text-center">Balance : {data.balance}</h3>
                 </div>
+                </>
+                )
+                :
+                <p> User data empty </p>
+                }
             </div>
         </div>
         </>

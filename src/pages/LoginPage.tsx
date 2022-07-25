@@ -25,17 +25,21 @@ function LoginForm() {
                 password: data.password
             }),
             credentials: "include"
-        }).then((res: any) => {
-            const data = JSON.parse(JSON.stringify(res));
-            console.log(res);
+        }).then(response => response.json())
+        .then((data:any) =>{
             setSuccess(true);
             const token = document.cookie
                 .split("; ")
                 .filter((row:any) => row.startsWith('access_token=')).map((c:any)=>c.split('=')[1])[0] || "";
             Cookies.set("access_token", token, { path: "/" });
-            console.log(data.is_admin);
             Cookies.set("is_admin", data.is_admin);
-            return navigate("/dashboard")
+            Cookies.set("username", data.username);
+            Cookies.set("name", data.name);
+            if (data.is_admin) {
+                return navigate("/userverif")
+            } else {
+                return navigate("/dashboard")
+            }
         }).catch(error => {
             alert(error);
         })
