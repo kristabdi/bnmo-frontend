@@ -13,7 +13,7 @@ function RequestHistory() {
         { header: 'Time Created', field: 'created_at' },
         { header: 'Time Updated', field: 'updated_at' },
     ]
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [pages, setPages] = useState(0);
     const [data, setData] = useState<any[]>([]);

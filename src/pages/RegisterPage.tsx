@@ -22,9 +22,6 @@ function RegisterForm() {
         fetch("http://localhost:3001/auth/register", {
             method: "POST",
             mode: "cors",
-            // headers: {
-            //     "Content-Type": 'multipart/form-data'
-            // },
             body:formData, 
             credentials: "include"
         }).then((res: any) => {
