@@ -15,7 +15,6 @@ function Dashboard() {
             credentials: "include"
         }).then(response => response.json())
         .then((body:any) =>{
-            console.log(body);
             setData(body);
         }).catch(error => {
             alert(error);

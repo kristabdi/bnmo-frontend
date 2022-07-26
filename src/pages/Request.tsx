@@ -1,40 +1,49 @@
-import axios from "axios";
-import React, { useState }  from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useCookies } from 'react-cookie';
 import NavbarUser from "../components/NavbarUser";
 import { currencyOptions } from "../components/CurrencyOptions";
+import Cookies from 'js-cookie';
 
-type FormData = {
+type Form = {
     amount: number;
     currency: string;
-    isAdd: boolean;
+    is_add: string;
 };
 
 function RequestForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
-    const [cookies, setCookie] = useCookies();
+    const { register, handleSubmit, formState: { errors } } = useForm<Form>();
 
-    const onSubmit = handleSubmit(async (data) => {
-        if (data.isAdd) {
+    const onSubmit = handleSubmit((data) => {
+        let uri = "";
+        let is_add = (data.is_add === "true") ? true : false;
 
+        if (!is_add) {
+            uri = "http://localhost:3001/customer/withdraw";
         } else {
-
+            uri = "http://localhost:3001/customer/deposit";
         }
-        await axios.post('/api/request/', {
+        console.log(data);
+        fetch(uri, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${cookies.get("access_token")}`
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("access_token")}`
             },
-            body: JSON.stringify(data)
-        }).then((res: any) => {
-            alert(JSON.stringify(`Login success!`));
-            // redirect to user or admin dashboard
-        }).catch(error => {
-            alert(JSON.stringify(`Login failed!`));
+            body:JSON.stringify({
+                amount: parseInt((data.amount).toString()),
+                currency: data.currency,
+                is_add: is_add,
+                is_approved: false
+            }),
+            credentials: "include"
+        }).then((response :any) => {
+            if (response.ok) {
+                alert("Request success!");
+                window.location.reload();
+            }
         })
-        console.log(JSON.stringify(data));
+        .catch(error => {
+            alert(error);
+        })
     })
 
     return (
@@ -51,13 +60,13 @@ function RequestForm() {
                                 <label className="text-left text-sm font-bold text-gray-600 block">Method</label>
                                 <select 
                                     className="border border-gray-300 rounded w-full p-1"
-                                    {...register("isAdd", { required: 'Method is required'})}
+                                    {...register("is_add", { required: 'Method is required'})}
                                 >
                                     <option value="">not selected</option>
                                     <option value="false">Withdraw</option>
                                     <option value="true">Deposit</option>
                                 </select>
-                                {errors.isAdd && <p className="text-left text-xs text-red-400">{errors.isAdd.message}</p>}
+                                {errors.is_add && <p className="text-left text-xs text-red-400">{errors.is_add.message}</p>}
                             </div>
                             <div>
                                 <label className="text-left text-sm font-bold text-gray-600 block">Currency</label>

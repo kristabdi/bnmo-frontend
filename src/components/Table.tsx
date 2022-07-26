@@ -1,5 +1,3 @@
-import React from "react";
-
 type Model = {
     data: any[];
     columns: any[];
@@ -29,12 +27,14 @@ function ReusableTable({ data, columns, onSubmit, history }: Model) {
                     data.map((row: any) => (
                     <tr key={row}>
                         {columns.map((col) => (
-                            ((col.field === "is_verified" || col.field === "is_approved") && !history) ?
+                            ((
+                                col.field === "is_verified" || col.field === "is_approved"
+                            ) && !history) ?
                             <button
                             type="submit" 
                             className="mt-2 px-1 py-0.5 border rounded-md bg-gray-300" 
-                            value={(col.field === "is_verified") ? row["username"] : row["id_user"]} onClick={onSubmit}>Verify</button>
-                            : <td key={col.field} className="border-solid border-b p-2 text-left">{row[col.field]}</td>
+                            value={(col.field === "is_verified") ? row["username"] : row["id"]} onClick={onSubmit}>Verify</button>
+                            : <td key={col.field} className="border-solid border-b p-2 text-left">{col.field === "currency" && !history ? "IDR" : row[col.field]}</td>
                         ))}
                     </tr>
                     ))}

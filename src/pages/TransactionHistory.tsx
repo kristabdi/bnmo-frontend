@@ -1,6 +1,4 @@
-import axios from "axios";
-import React, { useState }  from "react";
-import { useCookies } from 'react-cookie';
+import { useState }  from "react";
 import NavbarUser from "../components/NavbarUser";
 import Table from "../components/Table";
 import {transData} from "../components/CurrencyOptions";

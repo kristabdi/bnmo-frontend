@@ -1,4 +1,3 @@
-import { useState }  from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -10,8 +9,6 @@ type FormData = {
 
 function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
-    const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
 
     const onSubmit = handleSubmit((data) => {
@@ -27,18 +24,19 @@ function LoginForm() {
             credentials: "include"
         }).then(response => response.json())
         .then((data:any) =>{
-            setSuccess(true);
             const token = document.cookie
                 .split("; ")
                 .filter((row:any) => row.startsWith('access_token=')).map((c:any)=>c.split('=')[1])[0] || "";
             Cookies.set("access_token", token, { path: "/" });
             Cookies.set("is_admin", data.is_admin);
-            Cookies.set("username", data.username);
-            Cookies.set("name", data.name);
             if (data.is_admin) {
-                return navigate("/userverif")
+                window.location.href = "/userverif";
+                navigate("/userverif")
+                window.location.reload();
             } else {
-                return navigate("/dashboard")
+                window.location.href = "/dashboard";
+                navigate("/dashboard")
+                window.location.reload();
             }
         }).catch(error => {
             alert(error);
@@ -76,7 +74,6 @@ function LoginForm() {
                         <div>
                             <button type="submit" className="w-full p-2 bg-blue-700 hover:text-gray-900 hover:bg-blue-900 text-white font-bold py-2 rounded">Submit</button>
                         </div>
-                        {!success && <p className='text-warning'>{errMsg}</p>}
                     </form>
                 </div>
         </div>

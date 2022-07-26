@@ -1,7 +1,7 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import Table from '../components/Table'
 import NavbarAdmin from '../components/NavbarAdmin'
-import { reqData } from '../components/CurrencyOptions'
+import Cookies from 'js-cookie'
 
 function UserVerifPage() {
     const columns = [
@@ -12,16 +12,48 @@ function UserVerifPage() {
         { header: 'Is Add', field: 'is_add' },
         { header: 'Is Approved', field: 'is_approved' },
     ]
-
+    const [data, setData] = useState<any[]>([]);
     const onSubmit = (data: any) => {
-        // body : data.target.value
-        console.log(data.target.value);
+        fetch (`http://localhost:3001/admin/verify/req?id=${data.target.value}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("access_token")}`
+            },
+            credentials: "include"
+        }).then((response : any) => {
+            if (response.ok) {
+                alert("Success");
+                window.location.reload();
+            }
+        }).catch(error => {
+            alert(error);
+        });
     }
-    // tableData di fetch useEffect
+
+    useEffect(() => {
+        const fetchData = () => {
+            fetch (`http://localhost:3001/admin/list/history`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${Cookies.get("access_token")}`
+                },
+                credentials: "include"
+            }).then(response => response.json())
+            .then((body:any) =>{
+                setData(body);
+            }).catch(error => {
+                alert(error);
+            });
+        }
+        fetchData();
+    }, [setData]);
+    
     return (
         <>
         <NavbarAdmin/>
-        <Table data={reqData} columns={columns} onSubmit={onSubmit} history={false}/>
+        <Table data={data} columns={columns} onSubmit={onSubmit} history={false}/>
         </>
     )
 }

@@ -1,36 +1,36 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
-type FormData = {
+type Form = {
     name: string;
     username: string;
     password: string;
-    idcard: File;
+    photo: File[];
 };
 
 function RegisterForm() {
-    const { register, handleSubmit, setError, formState: { errors } } = useForm<FormData>({mode: "onChange"});
-    const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<Form>({mode: "onChange"});
     const navigate = useNavigate();
 
     const onSubmit = handleSubmit((data) => {
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("username", data.username);
+        formData.append("password", data.password);
+        formData.append("photo", data.photo[0]);
+
         fetch("http://localhost:3001/auth/register", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:JSON.stringify({
-                name: data.name,
-                username: data.username,
-                password: data.password,
-                idcard: data.idcard
-            }),
+            mode: "cors",
+            // headers: {
+            //     "Content-Type": 'multipart/form-data'
+            // },
+            body:formData, 
             credentials: "include"
         }).then((res: any) => {
-            setSuccess(true);
-            return navigate("/login")
+            window.location.href = "/login";
+            navigate("/login")
+            window.location.reload();
         }).catch(error => {
             alert(error);
         })
@@ -76,26 +76,18 @@ function RegisterForm() {
                         <div>
                             <label className="text-left text-sm font-bold text-gray-600 block">ID Card / KTP</label>
                             <input
-                                {...register("idcard", { required: true })}
+                                {...register("photo", { required: true })}
                                 placeholder="Choose image"
                                 type="file"
-                                onChange={(e) => {
-                                    if (e.target?.files && (e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/jpg" && e.target.files[0].type !== "image/jpeg")) {
-                                        setError('idcard', {
-                                            type: 'manual',
-                                            message: 'Please upload a valid image file (png/jpeg/jpg).'
-                                        });
-                                    }
-                                }}
+                                accept=".jpg, .jpeg, .png"
                                 className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                             />
-                            {errors.idcard && <p className="text-left text-xs text-red-400">{errors.idcard.message}</p>}
+                            {errors.photo && <p className="text-left text-xs text-red-400">{errors.photo.message}</p>}
                         </div>
                         <Link to="/login" className="text-right text-sm text-gray-600 block"> Already have an account? </Link>
                         <div>
                             <button type="submit" className="w-full p-2 bg-blue-700 hover:text-gray-900 hover:bg-blue-900 text-white font-bold py-2 rounded">Submit</button>
                         </div>
-                        {!success && <p className='text-warning'>{errMsg}</p>}
                     </form>
                 </div>
         </div>

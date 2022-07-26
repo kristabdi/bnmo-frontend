@@ -1,7 +1,7 @@
-import React from 'react'
+import {useEffect, useState} from 'react'
+import Cookies from 'js-cookie'
 import Table from '../components/Table'
 import NavbarAdmin from '../components/NavbarAdmin'
-import { tableData } from '../components/CurrencyOptions'
 
 function UserVerifPage() {
     const columns = [
@@ -9,16 +9,48 @@ function UserVerifPage() {
         { header: 'Username', field: 'username' },
         { header: 'Verify', field: 'is_verified' },
     ]
-
+    const [data, setData] = useState<any[]>([]);
     const onSubmit = (data: any) => {
-        // body : data.target.value
-        console.log(data.target.value);
+        fetch (`http://localhost:3001/admin/verify/user?username=${data.target.value}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("access_token")}`
+            },
+            credentials: "include"
+        }).then((response : any) => {
+            if (response.ok) {
+                alert("Success");
+                window.location.reload();
+            }
+        }).catch(error => {
+            alert(error);
+        });
     }
-    // tableData di fetch useEffect
+
+    useEffect(() => {
+        const fetchData = () => {
+            fetch (`http://localhost:3001/admin/list/user`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${Cookies.get("access_token")}`
+                },
+                credentials: "include"
+            }).then(response => response.json())
+            .then((body:any) =>{
+                setData(body);
+            }).catch(error => {
+                alert(error);
+            });
+        }
+        fetchData();
+    }, [setData]);
+
     return (
         <>
         <NavbarAdmin/>
-        <Table data={tableData} columns={columns} onSubmit={onSubmit} history={false}/>
+        <Table data={data} columns={columns} onSubmit={onSubmit} history={false}/>
         </>
     )
 }

@@ -1,8 +1,5 @@
-import axios from "axios";
-import React, { useState }  from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import Cookies from "js-cookie";
 import NavbarUser from "../components/NavbarUser";
 import { currencyOptions } from "../components/CurrencyOptions";
 
@@ -14,22 +11,28 @@ type FormData = {
 
 function TransactionForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
-    const [cookies, setCookie] = useCookies();
 
     const onSubmit = handleSubmit(async (data) => {
-        await axios.post('/api/request/', {
+        fetch('http://localhost:3001/customer/transaction', {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${cookies.get("token")}`
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("access_token")}`
             },
-            body: JSON.stringify(data)
-        }).then((res: any) => {
-            alert(JSON.stringify(`Login success!`));
-            // redirect to user or admin dashboard
+            body:JSON.stringify({
+                amount: parseInt((data.amount).toString()),
+                currency_from: data.currency_from,
+                username_to: data.username_to
+            }),
+            credentials: "include"
+        }).then((response :any) => {
+            if (response.ok) {
+                alert("Transaction success!");
+                window.location.reload();
+            }
         }).catch(error => {
-            alert(JSON.stringify(`Login failed!`));
+            alert(error);
         })
-        console.log(data);
     })
 
     return (
@@ -46,8 +49,8 @@ function TransactionForm() {
                                 <label className="text-left text-sm font-bold text-gray-600 block">Destination Account Username</label>
                                 <input
                                     {...register("username_to", { required: 'Username is required'})}
-                                    placeholder="Input only number"
-                                    type="number"
+                                    placeholder="Username"
+                                    type="text"
                                     className="w-full p-2 border border-gray-300 rounded mt-1 text-black"
                                 />
                                 {errors.username_to && <p className="text-left text-xs text-red-400">{errors.username_to.message}</p>}
