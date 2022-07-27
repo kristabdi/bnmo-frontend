@@ -48,12 +48,14 @@ function UserVerifPage() {
             });
         }
         fetchData();
-    }, [setData]);
+    }, []);
     
+    const dataFilter = data.filter(item => item.is_approved === false);
+
     return (
         <>
         <NavbarAdmin/>
-        <Table data={data} columns={columns} onSubmit={onSubmit} history={false}/>
+        <Table data={dataFilter} columns={columns} onSubmit={onSubmit} history={false}/>
         </>
     )
 }

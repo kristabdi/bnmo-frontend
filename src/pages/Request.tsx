@@ -21,7 +21,6 @@ function RequestForm() {
         } else {
             uri = "http://localhost:3001/customer/deposit";
         }
-        console.log(data);
         fetch(uri, {
             method: "POST",
             headers: {

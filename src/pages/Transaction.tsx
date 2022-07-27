@@ -10,9 +10,9 @@ type FormData = {
 };
 
 function TransactionForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({mode: "onChange"});
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-    const onSubmit = handleSubmit(async (data) => {
+    const onSubmit = handleSubmit((data) => {
         fetch('http://localhost:3001/customer/transaction', {
             method: "POST",
             headers: {

@@ -30,7 +30,7 @@ function UserVerifPage() {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch (`http://localhost:3001/admin/list/user`, {
+            fetch ('http://localhost:3001/admin/list/user', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -45,12 +45,14 @@ function UserVerifPage() {
             });
         }
         fetchData();
-    }, [setData]);
+        data.filter(item => item.is_verified === false)
+    }, []);
 
+    const dataFilter = data.filter(item => item.is_verified === false);
     return (
         <>
         <NavbarAdmin/>
-        <Table data={data} columns={columns} onSubmit={onSubmit} history={false}/>
+        <Table data={dataFilter} columns={columns} onSubmit={onSubmit} history={false}/>
         </>
     )
 }
