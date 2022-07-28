@@ -10,6 +10,7 @@ function UserVerifPage() {
         { header: 'Verify', field: 'is_verified' },
     ]
     const [data, setData] = useState<any[]>([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const onSubmit = (data: any) => {
         fetch (`http://localhost:3001/admin/verify/user?username=${data.target.value}`, {
             method: "POST",
@@ -45,13 +46,22 @@ function UserVerifPage() {
             });
         }
         fetchData();
-        data.filter(item => item.is_verified === false)
     }, []);
 
-    const dataFilter = data.filter(item => item.is_verified === false);
+    const dataFilter = data.filter(item => item.is_verified === false).filter(item => {
+        if (searchTerm === '') {
+            return item;
+        } else if (item.username.toLowerCase().includes(searchTerm.toLowerCase())) {
+            return item;
+        }
+    });
+
     return (
         <>
         <NavbarAdmin/>
+        <input type="text" className="border text-gray-900 p-2 rounded-xl text-sm px-5" placeholder='Search username...' onChange={(event) => setSearchTerm(event.target.value)}>
+        </input>
+
         <Table data={dataFilter} columns={columns} onSubmit={onSubmit} history={false}/>
         </>
     )

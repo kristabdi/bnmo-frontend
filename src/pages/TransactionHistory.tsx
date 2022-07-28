@@ -36,7 +36,6 @@ function TransactionHistory() {
                 alert(error);
             });
         }
-        console.log(page);
         fetchData();
     }, [page]);
 

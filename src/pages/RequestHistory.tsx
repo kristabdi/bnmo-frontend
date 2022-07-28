@@ -18,26 +18,29 @@ function RequestHistory() {
     const [pages, setPages] = useState(0);
     const [data, setData] = useState<any[]>([]);
 
+    const fetchData = () => {
+        fetch (`http://localhost:3001/customer/history/request?page=${page}&page_size=${pageSize}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("access_token")}`
+            },
+            credentials: "include"
+        }).then(response => response.json())
+        .then((body:any) =>{
+            setData(body);
+            setPages(body.length);
+        }).catch(error => {
+            alert(error);
+        });
+    }
+
     const changePage = ({selected}: any) => {
         setPage(selected);
+        fetchData();
     }
 
     useEffect(() => {
-        const fetchData = () => {
-            fetch (`http://localhost:3001/customer/history/request?page=${page}&page_size=${pageSize}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${Cookies.get("access_token")}`
-                },
-                credentials: "include"
-            }).then(response => response.json())
-            .then((body:any) =>{
-                setData(body);
-            }).catch(error => {
-                alert(error);
-            });
-        }
         fetchData();
     }, [page]);
 
@@ -46,10 +49,10 @@ function RequestHistory() {
         <NavbarUser/>
         <Table data={data} columns={columns} history={true}/>
         <nav className="flex justify-center" role="navigation" aria-label="pagination">
-            <ReactPaginate 
+        <ReactPaginate 
             previousLabel={"< Prev"}
             nextLabel={"Next >"}
-            pageCount={100}
+            pageCount={pages}
             onPageChange={changePage}
             />
         </nav>
