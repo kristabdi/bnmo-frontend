@@ -23,7 +23,7 @@ function ReusableTable({ data, columns, onSubmit, history }: Model) {
                 </tr>
             </thead>
             <tbody>
-                {data &&
+                {data && data.length > 0 ? (
                     data.map((row: any) => (
                     <tr key={row}>
                         {columns.map((col) => (
@@ -37,7 +37,7 @@ function ReusableTable({ data, columns, onSubmit, history }: Model) {
                             : <td key={col.field} className="border-solid border-b p-2 text-left">{col.field === "currency" && !history ? "IDR" : row[col.field]}</td>
                         ))}
                     </tr>
-                    ))}
+                    ))) : (<p> Empty table</p>)}
             </tbody>
         </table>
         {data ? null : <p>Empty table</p>}

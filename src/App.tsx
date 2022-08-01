@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { CookiesProvider } from 'react-cookie';
 import Cookies from 'js-cookie';
 import LoginForm from "./pages/LoginPage";
 import RegisterForm from "./pages/RegisterPage";
@@ -28,7 +27,6 @@ function App() {
   
 
   return (
-    <CookiesProvider>
     <div className="App">
       <BrowserRouter>
         <Routes>
@@ -45,7 +43,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-    </CookiesProvider>
   );
 }
 
