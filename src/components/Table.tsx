@@ -34,7 +34,7 @@ function ReusableTable({ data, columns, onSubmit, history }: Model) {
                             type="submit" 
                             className="mt-2 px-1 py-0.5 border rounded-md bg-gray-300" 
                             value={(col.field === "is_verified") ? row["username"] : row["id"]} onClick={onSubmit}>Verify</button>
-                            : <td key={col.field} className="border-solid border-b p-2 text-left">{col.field === "currency" && !history ? "IDR" : row[col.field]}</td>
+                            : <td key={col.field} className="border-solid border-b p-2 text-left">{col.field === "currency" && !history ? "IDR" : row[col.field].toString()}</td>
                         ))}
                     </tr>
                     ))) : (<p> Empty table</p>)}

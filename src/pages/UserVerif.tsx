@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
 import Table from '../components/Table'
 import NavbarAdmin from '../components/NavbarAdmin'
+import { AnyARecord } from 'dns'
 
 function UserVerifPage() {
     const columns = [

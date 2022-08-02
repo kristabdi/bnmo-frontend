@@ -13,6 +13,9 @@ function TransactionForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     const onSubmit = handleSubmit((data) => {
+        let currency_from = data.currency_from.toString();
+        let username_to = data.username_to.toString();
+
         fetch('http://localhost:3001/customer/transaction', {
             method: "POST",
             headers: {
@@ -21,8 +24,8 @@ function TransactionForm() {
             },
             body:JSON.stringify({
                 amount: parseInt((data.amount).toString()),
-                currency_from: data.currency_from,
-                username_to: data.username_to
+                currency_from: currency_from,
+                username_to: username_to
             }),
             credentials: "include"
         }).then((response :any) => {
