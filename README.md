@@ -29,8 +29,12 @@ Transaction to invalid customer username will not be processed.
 ```
 1. Builder
 Component Table cukup digunakan sebagai builder dimana fleksibilitas data dan header terlihat ketika komponen tabel digunakan pada page user
-verif, request verif, dan history untuk request ataupun transaction. Variasi pun dapat dilakukan dengan banyak meskipun technically table tidak membuat objek baru, tetapi komponen yang dapat bervariasi.
+verif, request verif, dan history untuk request ataupun transaction. Variasi pun dapat dilakukan dengan banyak meskipun technically table tidak membuat objek baru seperti builder, tetapi komponen yang dibuat dapat bervariasi.
 2. Composite
 Memiliki design pattern komposit, misalnya NavbarUser, NavbarAdmin, atau LogoutButton yang digunakan pada komponen atau page lainnya.
 ```
+
+## Bonus
+1. Melakukan verifikasi rekening tujuan pada fitur transfer sehingga apabila rekening tujuan tidak valid, maka proses transfer saldo tidak dapat dilakukan.
+2. Interface yang user-friendly (desain konsisten dan baik)
 
