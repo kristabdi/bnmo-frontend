@@ -14,8 +14,7 @@ function TransactionForm() {
 
     const onSubmit = handleSubmit((data) => {
         if (data.username_to === Cookies.get("username")) {
-            alert("You can't send money to yourself!");
-            window.location.reload();
+            return alert("You can't send money to yourself!");
         }
 
         fetch('http://localhost:3001/customer/transaction', {
