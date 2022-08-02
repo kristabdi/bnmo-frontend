@@ -6,8 +6,8 @@ function LogoutButton() {
 
     const onLogout = () => {
         Cookies.remove("access_token");
+        Cookies.remove("is_admin");
         Cookies.remove("username");
-        Cookies.remove("name");
         return navigate("/login");
     }
 

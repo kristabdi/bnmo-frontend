@@ -15,8 +15,6 @@ function RequestForm() {
     const onSubmit = handleSubmit((data) => {
         let uri = "";
         let is_add = (data.is_add === "true") ? true : false;
-        let currency = data.currency.toString();
-
         if (!is_add) {
             uri = "http://localhost:3001/customer/withdraw";
         } else {
@@ -30,7 +28,7 @@ function RequestForm() {
             },
             body:JSON.stringify({
                 amount: parseInt((data.amount).toString()),
-                currency: currency,
+                currency: data.currency,
                 is_add: is_add,
                 is_approved: false
             }),

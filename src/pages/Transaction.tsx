@@ -13,8 +13,10 @@ function TransactionForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     const onSubmit = handleSubmit((data) => {
-        let currency_from = data.currency_from.toString();
-        let username_to = data.username_to.toString();
+        if (data.username_to === Cookies.get("username")) {
+            alert("You can't send money to yourself!");
+            window.location.reload();
+        }
 
         fetch('http://localhost:3001/customer/transaction', {
             method: "POST",
@@ -24,8 +26,8 @@ function TransactionForm() {
             },
             body:JSON.stringify({
                 amount: parseInt((data.amount).toString()),
-                currency_from: currency_from,
-                username_to: username_to
+                currency_from: data.currency_from,
+                username_to: data.username_to
             }),
             credentials: "include"
         }).then((response :any) => {
