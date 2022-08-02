@@ -25,3 +25,12 @@ A request must be verified first by admin in the requests verification apge befo
 Transaction to invalid customer username will not be processed.
 ```
 
+## Design Pattern
+```
+1. Builder
+Component Table cukup digunakan sebagai builder dimana fleksibilitas data dan header terlihat ketika komponen tabel digunakan pada page user
+verif, request verif, dan history untuk request ataupun transaction. Variasi pun dapat dilakukan dengan banyak meskipun technically table tidak membuat objek baru, tetapi komponen yang dapat bervariasi.
+2. Composite
+Memiliki design pattern komposit, misalnya NavbarUser, NavbarAdmin, atau LogoutButton yang digunakan pada komponen atau page lainnya.
+```
+
