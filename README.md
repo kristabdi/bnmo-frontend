@@ -35,6 +35,6 @@ Memiliki design pattern komposit, misalnya NavbarUser, NavbarAdmin, atau LogoutB
 ```
 
 ## Bonus
-1. Melakukan verifikasi rekening tujuan pada fitur transfer sehingga apabila rekening tujuan tidak valid, maka proses transfer saldo tidak dapat dilakukan.
-2. Interface yang user-friendly (desain konsisten dan baik)
+1. Verify the destination account in the transfer feature so that if the destination account is invalid, the balance transfer process cannot be carried out.
+2. User-friendly interface (consistent and good design)
 
