@@ -23,22 +23,19 @@ function LoginForm() {
                 password: data.password
             }),
             credentials: "include"
-        }).then(response => response.json())
+        }).then(response => {
+            return response.json();
+        })
         .then((data:any) =>{
-            const token = document.cookie
-                .split("; ")
-                .filter((row:any) => row.startsWith('access_token=')).map((c:any)=>c.split('=')[1])[0] || "";
-            Cookies.set("access_token", token);
+            Cookies.set("access_token", data.access_token);
             Cookies.set("is_admin", data.is_admin);
             Cookies.set("username", data.username);
             if (data.is_admin) {
-                window.location.href = "/userverif";
                 navigate("/userverif")
-                window.location.reload();
+                window.location.reload()
             } else {
-                window.location.href = "/dashboard";
                 navigate("/dashboard")
-                window.location.reload();
+                window.location.reload()
             }
         }).catch(error => {
             alert(error);

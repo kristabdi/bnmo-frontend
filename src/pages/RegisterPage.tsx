@@ -26,7 +26,6 @@ function RegisterForm() {
             body:formData, 
             credentials: "include"
         }).then((res: any) => {
-            window.location.href = "/login";
             navigate("/login")
             window.location.reload();
         }).catch(error => {
