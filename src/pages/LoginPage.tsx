@@ -28,7 +28,7 @@ function LoginForm() {
             const token = document.cookie
                 .split("; ")
                 .filter((row:any) => row.startsWith('access_token=')).map((c:any)=>c.split('=')[1])[0] || "";
-            Cookies.set("access_token", token, { path: "/" });
+            Cookies.set("access_token", token);
             Cookies.set("is_admin", data.is_admin);
             Cookies.set("username", data.username);
             if (data.is_admin) {
