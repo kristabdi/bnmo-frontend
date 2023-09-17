@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import Cookies from 'js-cookie';
 import NavbarUser from "../components/NavbarUser"
+import api from "../clients/client"
 
 function Dashboard() {
     const [data,  setData] = useState<any>();
 
     const fetchData = () => {
-        fetch("http://localhost:3001/customer/info", {
+        fetch(api + "/customer/info", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

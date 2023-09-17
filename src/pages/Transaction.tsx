@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import NavbarUser from "../components/NavbarUser";
 import { currencyOptions } from "../components/CurrencyOptions";
+import api from "../clients/client"
 
 type FormData = {
     amount: number;
@@ -17,7 +18,7 @@ function TransactionForm() {
             return alert("You can't send money to yourself!");
         }
 
-        fetch('http://localhost:3001/customer/transaction', {
+        fetch(api + '/customer/transaction', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

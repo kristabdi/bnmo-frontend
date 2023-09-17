@@ -3,6 +3,7 @@ import NavbarUser from "../components/NavbarUser";
 import Table from "../components/Table";
 import Cookies from 'js-cookie';
 import ReactPaginate from "react-paginate";
+import api from "../clients/client"
 
 function TransactionHistory() {
     const columns = [
@@ -21,7 +22,7 @@ function TransactionHistory() {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch (`http://localhost:3001/customer/history/transaction?page=${page}&page_size=${pageSize}`, {
+            fetch (`${api}/customer/history/transaction?page=${page}&page_size=${pageSize}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

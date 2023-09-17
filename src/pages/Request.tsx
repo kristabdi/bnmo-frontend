@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import NavbarUser from "../components/NavbarUser";
 import { currencyOptions } from "../components/CurrencyOptions";
 import Cookies from 'js-cookie';
+import api from "../clients/client"
 
 type Form = {
     amount: number;
@@ -16,9 +17,9 @@ function RequestForm() {
         let uri = "";
         let is_add = (data.is_add === "true") ? true : false;
         if (!is_add) {
-            uri = "http://localhost:3001/customer/withdraw";
+            uri = api + "/customer/withdraw";
         } else {
-            uri = "http://localhost:3001/customer/deposit";
+            uri = api + "/customer/deposit";
         }
         fetch(uri, {
             method: "POST",

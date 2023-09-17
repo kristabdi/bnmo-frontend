@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import api from "../clients/client"
 
 type FormData = {
     username: string;
@@ -12,7 +13,7 @@ function LoginForm() {
     const navigate = useNavigate();
 
     const onSubmit = handleSubmit((data) => {
-        fetch("http://localhost:3001/auth/login", {
+        fetch(api + "/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

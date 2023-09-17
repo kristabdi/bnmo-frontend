@@ -3,6 +3,7 @@ import NavbarUser from "../components/NavbarUser";
 import Table from "../components/Table";
 import Cookies from 'js-cookie';
 import ReactPaginate from "react-paginate";
+import api from "../clients/client"
 
 function RequestHistory() {
     const columns = [
@@ -19,7 +20,7 @@ function RequestHistory() {
     const [data, setData] = useState<any[]>([]);
 
     const fetchData = () => {
-        fetch (`http://localhost:3001/customer/history/request?page=${page}&page_size=${pageSize}`, {
+        fetch (`${api}/customer/history/request?page=${page}&page_size=${pageSize}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

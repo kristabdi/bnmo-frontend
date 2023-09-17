@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../clients/client"
 
 type Form = {
     name: string;
@@ -19,7 +20,7 @@ function RegisterForm() {
         formData.append("password", data.password);
         formData.append("photo", data.photo[0]);
 
-        fetch("http://localhost:3001/auth/register", {
+        fetch(api + "/auth/register", {
             method: "POST",
             mode: "cors",
             body:formData, 

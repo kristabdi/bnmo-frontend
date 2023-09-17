@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Table from '../components/Table'
 import NavbarAdmin from '../components/NavbarAdmin'
 import Cookies from 'js-cookie'
+import api from "../clients/client"
 
 function UserVerifPage() {
     const columns = [
@@ -14,7 +15,7 @@ function UserVerifPage() {
     ]
     const [data, setData] = useState<any[]>([]);
     const onSubmit = (data: any) => {
-        fetch (`http://localhost:3001/admin/verify/req?id=${data.target.value}`, {
+        fetch (`${api}/admin/verify/req?id=${data.target.value}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +34,7 @@ function UserVerifPage() {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch (`http://localhost:3001/admin/list/history`, {
+            fetch (`${api}/admin/list/history`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
